@@ -1,4 +1,19 @@
 class PlantsController < ApplicationController
+  def update_care_information(care_info)
+    sentences = care_info.split('. ').map(&:strip)
+
+    # extract integer from watering frequency sentence
+    watering_freq_sentence = sentences[0]
+    watering_freq_integer = watering_freq_sentence.scan(/\d+/).first.to_i
+    self.watering_frequency = watering_freq_integer
+
+    self.sunlight_requirements = sentences[1]   # extract sunlight requirements
+    self.soil_type = sentences[2]               # extract soil type
+    self.other_tips = sentences[3]              # extract other tips
+
+    self.save
+  end
+
   def index
     matching_plants = Plant.where(user_id: current_user.id) #users can only see the list of their plants
 
@@ -29,6 +44,16 @@ class PlantsController < ApplicationController
 
     if the_plant.valid?
       the_plant.save
+  
+      # fetch plant care information from ChatGPT
+      chat_gpt_service = ChatGPTService.new
+      response = chat_gpt_service.query_plant_info(the_plant.plant_name)
+      if response.success?
+        plant_info = JSON.parse(response.body)
+        care_info = plant_info['choices'].first['text']
+        the_plant.update_care_information(care_info) # update plant watering_fre, sunlight_req, soil_type, and other_tips
+      end
+
       redirect_to("/plants", { :notice => "Plant created successfully." })
     else
       redirect_to("/plants", { :alert => the_plant.errors.full_messages.to_sentence })
