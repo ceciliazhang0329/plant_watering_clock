@@ -23,43 +23,61 @@ class PlantsController < ApplicationController
   def create
     the_plant = Plant.new(plant_name: params[:query_plant_name], last_watered_date: params[:query_last_watered_date])
     the_plant.user_id = current_user.id
-
+  
     if the_plant.save
-      care_info = fetch_plant_care_info(the_plant.plant_name)
-      update_plant_care_information(the_plant, care_info) if care_info.present?
-
+      # Prepare the request data for OpenAI
+      request_data = {
+        'model' => 'gpt-3.5-turbo',
+        'messages' => [
+          { 'role' => 'system', 'content' => 'You are an expert at growing plants' },
+          {
+            'role' => 'user',
+            'content' => "Could you provide the watering frequency, sunlight requirements, soil type, and other tips for growing a #{the_plant.plant_name}? 
+  
+            Here is the requirement for answering the question:
+            1. Write each sentence for watering frequency, sunlight requirements, soil type, and other tips respectively. Include no other sentences in the answer (only 4 sentences).
+            2. When answering watering frequency, the unit should be days. Answer it only in an integer. For example: 4"
+          }
+        ]
+      }
+  
+      # Convert the request data to JSON
+      request_json = request_data.to_json
+  
+      # Set up the HTTP request to OpenAI
+      api_url = URI("https://api.openai.com/v1/chat/completions")
+      request = Net::HTTP::Post.new(api_url)
+      request['Authorization'] = "Bearer #{ENV['OPENAI_API_KEY']}"
+      request['Content-Type'] = 'application/json'
+      request.body = request_json
+  
+      # Send the request to OpenAI
+      response = Net::HTTP.start(api_url.hostname, api_url.port, use_ssl: true) do |http|
+        http.request(request)
+      end
+  
+      # Parse the response JSON
+      response_data = JSON.parse(response.body)
+  
+      # Extract the assistant's reply
+      assistant_reply = response_data['choices'][0]['message']['content']
+  
+      # Update the plant care information
+      update_plant_care_information(the_plant, assistant_reply) if assistant_reply.present?
+  
       redirect_to plants_path, notice: 'Plant created successfully.'
     else
       render :new, alert: the_plant.errors.full_messages.to_sentence
     end
   end
-
-  def plant_params
-    params.permit(:query_plant_name, :query_last_watered_date)
-  end  
-
-  def fetch_plant_care_info(plant_name)
-    response = self.class.post(
-      "/engines/gpt-3.5-turbo/completions",
-      headers: {
-        "Authorization" => "Bearer #{ENV['OPENAI_API_KEY']}",
-        "Content-Type" => "application/json"
-      },
-      body: {
-        prompt: "Suppose you are an expert at growing plants. Could you provide the watering frequency, sunlight requirements, soil type, and other tips for growing a #{plant_name}? Here is the requirement for answering the question: 1. Only reply 4 sentences for watering frequency, sunlight requirements, soil type, and other tips respectively. Include no other sentences in the answer. 2. When answering watering frequency, the unit should be days. Answer it only in an integer. For example: 4"
-      }.to_json
-    )
-
-    if response.success?
-      JSON.parse(response.body)['choices'].first['text']
-    end
-  end
-
+  
+  private
+  
   def update_plant_care_information(plant, care_info)
     sentences = care_info.split('. ').map(&:strip)
     plant.update(
       watering_frequency: sentences[0].scan(/\d+/).first.to_i,
-      sunlight_requirements: sentences[1],
+      sunlight_requirement: sentences[1],
       soil_type: sentences[2],
       other_tips: sentences[3]
     )

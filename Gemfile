@@ -42,8 +42,10 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
-# Makes HTTP requests
+# Makes HTTP requests and parse json file
 gem "httparty"
+gem 'net-http'
+gem 'json'
 
 # Use Sass to process CSS
 # gem "sassc-rails"
