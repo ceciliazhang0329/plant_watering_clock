@@ -111,4 +111,8 @@ class PlantsController < ApplicationController
 
     redirect_to("/plants", { :notice => "Plant deleted successfully."} )
   end
+
+  def show
+    render({ :template => "plants/about" })
+  end
 end

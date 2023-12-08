@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   # DELETE
   get("/delete_plant/:path_id", { :controller => "plants", :action => "destroy" })
 
+  get("/about", { :controller => "plants", :action => "about" })
   #------------------------------
 
   devise_for :users
