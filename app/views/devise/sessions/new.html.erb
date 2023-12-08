@@ -1,15 +1,5 @@
 <div class="text-center">
-  <img src="/workspaces/plant_watering_clock/app/assets/images/IMG_9191.jpg" alt="...">
-  <figure class="text-center">
-    <blockquote class="blockquote">
-      <p class="mb-0">At PlantH2O Pro, we're passionate about helping you nurture your indoor plants to thrive and flourish.</p>
-      <p class="mb-0">We understand that not everyone has a green thumb, and that's where our innovative solution comes into play.</p>
-    
-    </blockquote>
-    <figcaption class="blockquote-footer">
-      PlantH2O Pro Team
-    </figcaption>
-  </figure>
+  <%= image_tag("logo.jpg", class: "thumbnail", size: "300x400", alt: "...") %>
   <h2>Log in</h2>
 
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
