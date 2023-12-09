@@ -1,5 +1,5 @@
 <div class="text-center">
-  <h3>About Us</h3>
+  <h3 class="mt-3">About Us</h3>
 
   <figure class="text-center">
     <blockquote class="blockquote">
@@ -11,15 +11,15 @@
       PlantH2O Pro Team
     </figcaption>
   </figure>
-  <%= image_tag("logo.jpg", class: "thumbnail", size: "150x200", alt: "...") %>
+  <%= image_tag("logo.jpg", class: "thumbnail", size: "150x200", alt: "logo") %>
 </div>
 
 <div class="text-center">
   <div>
-    <h1>Add a new plant</h1>
+    <h1 class="mt-2">Add a new plant</h1>
 
     <form action="/insert_plant" method="post">
-      <div class="row d-flex justify-content-center mb-3">
+      <div class="row d-flex justify-content-center mt-3 mb-3">
         <label for="plant_name_box" class="col-sm-2 col-form-label">
           Plant name
         </label>
@@ -45,7 +45,7 @@
 </div>
 
 
-<div class="container">
+<div class="container mb-5">
   <div class="row justify-content-center mt-4">
     <div class="col-md-10">
       <div class="card text-white bg-primary">

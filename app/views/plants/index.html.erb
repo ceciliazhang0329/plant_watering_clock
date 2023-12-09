@@ -1,7 +1,7 @@
 <div class="m-3 text-center">
   <div>
     <h1>
-      List of all plants
+      Which plant to water?
     </h1>
   </div>
 </div>
@@ -22,11 +22,11 @@
                 </a>
               </div>
               <div class="card-body">
-                <p class="card-title">Last Watered: <%= plant.last_watered_date %></p>
-                <p class="card-text">Watering Frequency: <%= plant.watering_frequency %> days</p>
-                <p class="card-text">Sunlight Requirement: <%= plant.sunlight_requirement %></p>
-                <p class="card-text">Soil type: <%= plant.soil_type %></p>
-                <p class="card-text">Other tips: <%= plant.other_tips %></p>
+                <p class="card-title"><strong>Last Watered: </strong><%= plant.last_watered_date %></p>
+                <p class="card-text"><strong>Watering Frequency: </strong><%= plant.watering_frequency %> days</p>
+                <p class="card-text"><strong>Sunlight Requirement: </strong><%= plant.sunlight_requirement %></p>
+                <p class="card-text"><strong>Soil type: </strong><%= plant.soil_type %></p>
+                <p class="card-text"><strong>Other tips: </strong><%= plant.other_tips %></p>
               </div>
             </div>
           </div>

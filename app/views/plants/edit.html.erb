@@ -1,6 +1,7 @@
 <div class="text-center">
   <div>
-    <h1>Edit <%= @the_plant.plant_name %></h1>
+    <%= image_tag("logo.jpg", class: "thumbnail mt-3", size: "200x267", alt: "...") %>
+    <h1 class="mt-3">Edit <%= @the_plant.plant_name %></h1>
     <div class="mb-3">
       <a href="/delete_plant/<%= @the_plant.id %>">
         Delete it
@@ -58,56 +59,3 @@
     </form>
   </div>
 </div>
-
-
-<div>
-  </div>
-    <form action="/modify_plant/<%= @the_plant.id %>"  method="post" >
-      <div>
-        <label for="last_watered_date_box">
-          Last watered date
-        </label>
-
-        <input type="date" id="last_watered_date_box" name="query_last_watered_date" value="<%= @the_plant.last_watered_date %>">
-      </div>
-
-      <div>
-        <label for="watering_frequency_box">
-          Watering frequency
-        </label>
-
-        <input type="text" id="watering_frequency_box" name="query_watering_frequency" value="<%= @the_plant.watering_frequency %>">
-      </div>
-
-      <div>
-        <label for="sunlight_requirement_box">
-          Sunlight requirement
-        </label>
-
-        <input type="text" id="sunlight_requirement_box" name="query_sunlight_requirement" value="<%= @the_plant.sunlight_requirement %>">
-      </div>
-
-      <div>
-        <label for="soil_type_box">
-          Soil type
-        </label>
-
-        <input type="text" id="soil_type_box" name="query_soil_type" value="<%= @the_plant.soil_type %>">
-      </div>
-
-      <div>
-        <label for="other_tips_box">
-          Other tips
-        </label>
-
-        <input type="text" id="other_tips_box" name="query_other_tips" value="<%= @the_plant.other_tips %>">
-      </div>
-
-      <button>
-        Update plant
-      </button>
-    </form>
-  </div>
-</div>
-
-<hr>
