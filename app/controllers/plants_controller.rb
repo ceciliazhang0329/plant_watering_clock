@@ -13,9 +13,7 @@ class PlantsController < ApplicationController
   def show
     the_id = params.fetch("path_id")
 
-    matching_plants = Plant.where({ :id => the_id })
-
-    @the_plant = matching_plants.at(0)
+    @the_plant = Plant.find_by(id: the_id)
 
     render({ :template => "plants/show" })
   end
@@ -70,24 +68,12 @@ class PlantsController < ApplicationController
       render :new, alert: the_plant.errors.full_messages.to_sentence
     end
   end
-  
-  private
-  
-  def update_plant_care_information(plant, care_info)
-    sentences = care_info.split('. ').map(&:strip)
-    plant.update(
-      watering_frequency: sentences[0].scan(/\d+/).first.to_i,
-      sunlight_requirement: sentences[1],
-      soil_type: sentences[2],
-      other_tips: sentences[3]
-    )
-  end
 
   def update
     the_id = params.fetch("path_id")
     the_plant = Plant.where({ :id => the_id }).at(0)
 
-    the_plant.user_id = current_user.id
+    the_plant.user_id = params.fetch("query_user_id")
     the_plant.plant_name = params.fetch("query_plant_name")
     the_plant.last_watered_date = params.fetch("query_last_watered_date")
     the_plant.watering_frequency = params.fetch("query_watering_frequency")
@@ -112,7 +98,19 @@ class PlantsController < ApplicationController
     redirect_to("/plants", { :notice => "Plant deleted successfully."} )
   end
 
-  def show
+  def about
     render({ :template => "plants/about" })
+  end
+
+  private
+  
+  def update_plant_care_information(plant, care_info)
+    sentences = care_info.split('. ').map(&:strip)
+    plant.update(
+      watering_frequency: sentences[0].scan(/\d+/).first.to_i,
+      sunlight_requirement: sentences[1],
+      soil_type: sentences[2],
+      other_tips: sentences[3]
+    )
   end
 end
