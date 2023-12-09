@@ -37,12 +37,12 @@ class PlantsController < ApplicationController
     render({ :template => "plants/index" })
   end
 
-  def show
+  def edit
     the_id = params.fetch("path_id")
 
     @the_plant = Plant.find_by(id: the_id)
 
-    render({ :template => "plants/show" })
+    render({ :template => "plants/edit" })
   end
 
   def create
@@ -100,8 +100,8 @@ class PlantsController < ApplicationController
     the_id = params.fetch("path_id")
     the_plant = Plant.where({ :id => the_id }).at(0)
 
-    the_plant.user_id = params.fetch("query_user_id")
-    the_plant.plant_name = params.fetch("query_plant_name")
+    the_plant.user_id = current_user.id
+    the_plant.plant_name = the_plant.plant_name
     the_plant.last_watered_date = params.fetch("query_last_watered_date")
     the_plant.watering_frequency = params.fetch("query_watering_frequency")
     the_plant.sunlight_requirement = params.fetch("query_sunlight_requirement")
@@ -110,9 +110,9 @@ class PlantsController < ApplicationController
 
     if the_plant.valid?
       the_plant.save
-      redirect_to("/plants/#{the_plant.id}", { :notice => "Plant updated successfully."} )
+      redirect_to("/plants", { :notice => "Plant updated successfully."} )
     else
-      redirect_to("/plants/#{the_plant.id}", { :alert => the_plant.errors.full_messages.to_sentence })
+      redirect_to("/plants", { :alert => the_plant.errors.full_messages.to_sentence })
     end
   end
 
