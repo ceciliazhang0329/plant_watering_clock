@@ -29,7 +29,7 @@ class PlantsController < ApplicationController
     ")
 
     # Select plants with no watering information
-    @no_water_info_plants = @list_of_plants.where("
+    @no_frequency_info_plants = @list_of_plants.where("
       (last_watered_date IS NULL) OR
       (watering_frequency IS NULL)
     ")
@@ -125,8 +125,8 @@ class PlantsController < ApplicationController
     redirect_to("/plants", { :notice => "Plant deleted successfully."} )
   end
 
-  def about
-    render({ :template => "plants/about" })
+  def add_new
+    render({ :template => "plants/add_new" })
   end
 
   private

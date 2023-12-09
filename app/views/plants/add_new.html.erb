@@ -1,5 +1,5 @@
 <div class="text-center">
-  <h1>About Us</h1>
+  <h3>About Us</h3>
 
   <figure class="text-center">
     <blockquote class="blockquote">
@@ -11,8 +11,39 @@
       PlantH2O Pro Team
     </figcaption>
   </figure>
-  <%= image_tag("logo.jpg", class: "thumbnail", size: "300x400", alt: "...") %>
+  <%= image_tag("logo.jpg", class: "thumbnail", size: "150x200", alt: "...") %>
 </div>
+
+<div class="text-center">
+  <div>
+    <h1>Add a new plant</h1>
+
+    <form action="/insert_plant" method="post">
+      <div class="row d-flex justify-content-center mb-3">
+        <label for="plant_name_box" class="col-sm-2 col-form-label">
+          Plant name
+        </label>
+        <div class="col-sm-2">
+          <input type="text" id="plant_name_box" name="query_plant_name" class="form-control">
+        </div>
+      </div>
+
+      <div class="row d-flex justify-content-center mb-3">
+        <label for="last_watered_date_box" class="col-sm-2 col-form-label">
+          Last watered date
+        </label>
+        <div class="col-sm-2">
+          <input type="date" id="last_watered_date_box" name="query_last_watered_date" class="form-control">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        Create plant
+      </button>
+    </form>
+  </div>
+</div>
+
 
 <div class="container">
   <div class="row justify-content-center mt-4">

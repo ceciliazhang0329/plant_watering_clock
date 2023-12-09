@@ -1,4 +1,4 @@
-<div>
+<div class="m-3 text-center">
   <div>
     <h1>
       List of all plants
@@ -6,37 +6,40 @@
   </div>
 </div>
 
-<hr>
-
-<div>
-  <div>
-    <h2>
-      Add a new plant
-    </h2>
-
-    <form action="/insert_plant" method="post">
-      <div>
-        <label for="plant_name_box">
-          Plant name
-        </label>
-
-        <input type="text" id="plant_name_box" name="query_plant_name">
-      </div>
-
-      <div>
-        <label for="last_watered_date_box">
-          Last watered date
-        </label>
-
-        <input type="date" id="last_watered_date_box" name="query_last_watered_date">
-      </div>
-
-      <button>
-        Create plant
-      </button>
-    </form>
-  </div>
+<%# Define a function to render plant information as cards %>
+<div class="m-3">
+  <% def render_plant_cards(plants, title, card_color) %>
+    <h2 class="m-3"><%= title %></h2>
+    <div class="row m-3">
+      <% if plants.present? && plants.any? %>
+        <% plants.each do |plant| %>
+          <div class="col-md-4 mb-3">
+            <div class="card text-white <%= card_color %>">
+              <div class="card-header">
+                <h4 class="card-title"><%= plant.plant_name %></h4>
+              </div>
+              <div class="card-body">
+                <p class="card-title">Last Watered: <%= plant.last_watered_date %></p>
+                <p class="card-text">Watering Frequency: <%= plant.watering_frequency %> days</p>
+                <p class="card-text">Sunlight Requirement: <%= plant.sunlight_requirement %></p>
+                <p class="card-text">Soil type: <%= plant.soil_type %></p>
+                <p class="card-text">Other tips: <%= plant.other_tips %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p>No plants in this category.</p>
+      <% end %>
+    </div>
+  <% end %>
 </div>
+
+<%# Call the function for each category using plant data %>
+<%= raw render_plant_cards(@overdue_plants, "Overdue Watering", "bg-primary") %>
+<%= raw render_plant_cards(@today_water_plants, "Today's Watering", "bg-danger") %>
+<%= raw render_plant_cards(@no_need_for_water_plants, "No Watering Needed Today", "bg-success") %>
+<%= raw render_plant_cards(@no_frequency_info_plants, "No Frequency Info", "bg-secondary") %>
 
 <hr>
 <div>
@@ -138,39 +141,3 @@
     </table>
   </div>
 </div>
-
-<hr>
-
-<%# Define a function to render the plant table %>
-<% def render_plant_table(plants, title) %>
-  <h2><%= title %></h2>
-  <% if plants.present? && plants.any? %>
-    <table>
-      <!-- Table headers and structure -->
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Last Watered Date</th>
-          <th>Watering Frequency</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% plants.each do |plant| %>
-          <tr>
-            <td><%= plant.plant_name %></td>
-            <td><%= plant.last_watered_date %></td>
-            <td><%= plant.watering_frequency %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p>No plants in this category.</p>
-  <% end %>
-<% end %>
-
-<%# Call the function for each section using @list_of_plants %>
-<%= raw render_plant_table(@overdue_plants, "Overdue Watering") %>
-<%= raw render_plant_table(@today_water_plants, "Today's Watering") %>
-<%= raw render_plant_table(@no_need_for_water_plants, "No Watering Needed Today") %>
-<%= raw render_plant_table(@no_water_info_plants, "No Frequency Info") %>

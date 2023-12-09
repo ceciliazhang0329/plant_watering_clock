@@ -16,12 +16,12 @@ Rails.application.routes.draw do
   # DELETE
   get("/delete_plant/:path_id", { :controller => "plants", :action => "destroy" })
 
-  get("/about", { :controller => "plants", :action => "about" })
+  get("/add_new", { :controller => "plants", :action => "add_new" })
   #------------------------------
 
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  root "plants#index"
+  root "plants#add_new"
   # Defines the root path route ("/")
   
   # root "articles#index"
