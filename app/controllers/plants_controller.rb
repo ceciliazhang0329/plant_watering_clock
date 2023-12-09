@@ -7,6 +7,33 @@ class PlantsController < ApplicationController
 
     @list_of_plants = matching_plants.order({ :created_at => :desc })
 
+    # Select overdue plants
+    @overdue_plants = @list_of_plants.where("
+      (last_watered_date IS NOT NULL) AND
+      (watering_frequency IS NOT NULL) AND
+      (date(last_watered_date, '+' || watering_frequency || ' days') < date('now'))
+    ")
+
+    # Select today's watering plants
+    @today_water_plants = @list_of_plants.where("
+      (last_watered_date IS NOT NULL) AND
+      (watering_frequency IS NOT NULL) AND
+      (date(last_watered_date, '+' || watering_frequency || ' days') = date('now'))
+    ")
+
+    # Select plants that don't need watering today
+    @no_need_for_water_plants = @list_of_plants.where("
+      (last_watered_date IS NOT NULL) AND
+      (watering_frequency IS NOT NULL) AND
+      (date(last_watered_date, '+' || watering_frequency || ' days') > date('now'))
+    ")
+
+    # Select plants with no watering information
+    @no_water_info_plants = @list_of_plants.where("
+      (last_watered_date IS NULL) OR
+      (watering_frequency IS NULL)
+    ")
+
     render({ :template => "plants/index" })
   end
 

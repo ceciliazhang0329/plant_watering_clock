@@ -140,3 +140,37 @@
 </div>
 
 <hr>
+
+<%# Define a function to render the plant table %>
+<% def render_plant_table(plants, title) %>
+  <h2><%= title %></h2>
+  <% if plants.present? && plants.any? %>
+    <table>
+      <!-- Table headers and structure -->
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Last Watered Date</th>
+          <th>Watering Frequency</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% plants.each do |plant| %>
+          <tr>
+            <td><%= plant.plant_name %></td>
+            <td><%= plant.last_watered_date %></td>
+            <td><%= plant.watering_frequency %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No plants in this category.</p>
+  <% end %>
+<% end %>
+
+<%# Call the function for each section using @list_of_plants %>
+<%= raw render_plant_table(@overdue_plants, "Overdue Watering") %>
+<%= raw render_plant_table(@today_water_plants, "Today's Watering") %>
+<%= raw render_plant_table(@no_need_for_water_plants, "No Watering Needed Today") %>
+<%= raw render_plant_table(@no_water_info_plants, "No Frequency Info") %>
