@@ -115,6 +115,17 @@ class PlantsController < ApplicationController
       redirect_to("/plants", { :alert => the_plant.errors.full_messages.to_sentence })
     end
   end
+  
+  def update_watered_date
+    # Find the plant by its ID
+    plant = Plant.find(params[:id])
+
+    # Update the last watered date
+    plant.update(last_watered_date: params[:last_watered_date])
+
+    # Redirect to the plants list or another appropriate page
+    redirect_to plants_path, notice: 'Plant was successfully watered today.'
+  end
 
   def destroy
     the_id = params.fetch("path_id")

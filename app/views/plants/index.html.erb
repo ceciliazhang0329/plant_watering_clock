@@ -27,6 +27,10 @@
                 <p class="card-text"><strong>Sunlight Requirement: </strong><%= plant.sunlight_requirement %></p>
                 <p class="card-text"><strong>Soil type: </strong><%= plant.soil_type %></p>
                 <p class="card-text"><strong>Other tips: </strong><%= plant.other_tips %></p>
+                <form action="/update_watered_date/<%= plant.id %>" method="post" class="text-center">
+                  <input type="hidden" name="last_watered_date" value="<%= Date.today %>">
+                  <button type="submit" class="btn btn-dark">Watered Today!</button>
+                </form>
               </div>
             </div>
           </div>
@@ -43,104 +47,3 @@
 <%= raw render_plant_cards(@today_water_plants, "Today's Watering", "bg-danger") %>
 <%= raw render_plant_cards(@no_need_for_water_plants, "No Watering Needed Today", "bg-success") %>
 <%= raw render_plant_cards(@no_frequency_info_plants, "No Frequency Info", "bg-secondary") %>
-
-<hr>
-<div>
-  <div>
-    <table border="1">
-      <tr>
-        <th>
-          ID
-        </th>
-
-        <th>
-          User
-        </th>
-
-        <th>
-          Plant name
-        </th>
-
-        <th>
-          Last watered date
-        </th>
-
-        <th>
-          Watering frequency
-        </th>
-
-        <th>
-          Sunlight requirement
-        </th>
-
-        <th>
-          Soil type
-        </th>
-
-        <th>
-          Other tips
-        </th>
-
-        <th>
-          Created at
-        </th>
-
-        <th>
-          Updated at
-        </th>
-
-        <th>
-        </th>
-      </tr>
-
-      <% @list_of_plants.each do |a_plant| %>
-      <tr>
-        <td>
-          <%= a_plant.id %>
-        </td>
-
-        <td>
-          <%= a_plant.user_id %>
-        </td>
-
-        <td>
-          <%= a_plant.plant_name %>
-        </td>
-
-        <td>
-          <%= a_plant.last_watered_date %>
-        </td>
-
-        <td>
-          <%= a_plant.watering_frequency %>
-        </td>
-
-        <td>
-          <%= a_plant.sunlight_requirement %>
-        </td>
-
-        <td>
-          <%= a_plant.soil_type %>
-        </td>
-
-        <td>
-          <%= a_plant.other_tips %>
-        </td>
-
-        <td>
-          <%= time_ago_in_words(a_plant.created_at) %> ago
-        </td>
-        <td>
-          <%= time_ago_in_words(a_plant.updated_at) %> ago
-        </td>
-
-        <td>
-          <a href="/plants/<%= a_plant.id %>">
-            Show details
-          </a>
-        </td>
-      </tr>
-      <% end %>
-    </table>
-  </div>
-</div>

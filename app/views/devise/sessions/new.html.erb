@@ -1,16 +1,20 @@
-<div class="text-center">
+<div class="text-center mt-2">
   <%= image_tag("logo.jpg", class: "thumbnail", size: "300x400", alt: "...") %>
   <h2>Log in</h2>
 
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <div class="field">
-      <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <div class="field d-flex justify-content-center mt-3 mb-3">
+      <label class="col-sm-1 col-form-label"><%= f.label :email %></label>
+      <div class="col-sm-3">
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control'%>
+      </div>
     </div>
 
-    <div class="field">
-      <%= f.label :password %><br />
-      <%= f.password_field :password, autocomplete: "current-password" %>
+    <div class="field d-flex justify-content-center mt-3 mb-1">
+      <label class="col-sm-1 col-form-label"><%= f.label :password %></label>
+      <div class="col-sm-3">
+        <%= f.password_field :password, autocomplete: "current-password", class: 'form-control'%>
+      </div>
     </div>
 
     <% if devise_mapping.rememberable? %>
@@ -20,7 +24,7 @@
       </div>
     <% end %>
 
-    <div class="actions">
+    <div class="actions mt-1">
       <%= f.submit "Log in", class: "btn btn-primary" %>
     </div>
   <% end %>
